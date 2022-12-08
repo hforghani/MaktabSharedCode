@@ -27,12 +27,13 @@ if __name__ == '__main__':
         })
             }
 
-    r = redis.Redis(db=0)
+    r = redis.Redis(db=1)
 
-    with r.pipeline() as pipe:
+    with r.pipeline() as pipe:  # Transaction
         for h_id, hat in hats.items():
             pipe.hset(h_id, mapping=hat)
+            # pipe.hset(h_id, key, value)
         pipe.execute()
 
     print('hats saved successfully')
-    r.bgsave()  # to persist in the db
+    r.bgsave()  # to persist in the db -> snapshot
