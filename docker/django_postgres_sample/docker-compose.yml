@@ -1,0 +1,19 @@
+services:
+  django:
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - media:media
+    depends_on:
+      - db
+
+  db:
+    image: postgres:11-alpine
+    volumes:
+#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data:
+  media:

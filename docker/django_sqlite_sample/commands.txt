@@ -1,0 +1,2 @@
+docker build -t polls_docker_sample .
+docker run --publish 8000:8000 polls_docker_sample
