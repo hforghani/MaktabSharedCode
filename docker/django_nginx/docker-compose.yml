@@ -1,0 +1,51 @@
+services:
+  # Nginx server
+  nginx:
+
+    # Build context
+    build: ./nginx
+
+    # Mapping machine and container ports
+    ports:
+      - 1337:80
+
+    # Storage volumes
+    volumes:
+      - static_volume:/app/web/staticfiles
+      - media_volume:/app/web/mediafiles
+    depends_on:
+      - web
+    restart: "on-failure"
+
+
+  web:
+    build: ./web
+
+    ports:
+      - 8000:8000
+
+    # Build commands
+    command: sh -c "python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py collectstatic &&
+      gunicorn web.wsgi:application --bind"
+
+   # Storage volumes
+    volumes:
+      - static_volume:/app/web/staticfiles
+      - media_volume:/app/web/mediafiles
+
+    depends_on:
+      - db
+    restart: "on-failure"
+
+  db:
+    image: postgres:16.4-alpine
+    volumes:
+#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
