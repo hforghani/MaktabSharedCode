@@ -1,0 +1,15 @@
+<ul>
+	<!-- Iterate over object_list -->
+	{% for object in object_list %}
+	<!-- Display Objects -->
+	<li>{{ object.email }}</li>
+	<li>{{ object.message }}</li>
+    <li>{{ object.task_id }}</li>
+    <li>{{ object.sent }}</li>
+
+	<hr/>
+	<!-- If object_list is empty -->
+	{% empty %}
+	<li>No feedbacks yet.</li>
+	{% endfor %}
+</ul>
