@@ -7,6 +7,8 @@ for _ in range(count):
     res = consume_some_time.delay()
     results.append(res)
 
+print("tasks created")
+
 ready = set()
 while len(ready) < count:
     time.sleep(3)
